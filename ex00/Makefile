@@ -2,7 +2,7 @@ CC = c++
 CPPFLAGS = -Wall -Wextra -Werror -std=c++98 -g
 NAME = btc
 SRC =  main.cpp \
-	BitcoinExchange.cpp 
+	src/BitcoinExchange.cpp 
 OBJ = $(SRC:.cpp=.o)
 %.o: %.cpp
 	$(CC) $(CPPFLAGS) -c $< -o $@
