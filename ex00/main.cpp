@@ -11,12 +11,14 @@ int main(int gc, char **gv)
     {
         BitcoinExchange btc(gv[1]);
         btc.getDataFromInputFile();
+        btc.getDataFromCsvFile();
+        btc.isCsvDataValid();
+        btc.calculateExchangeRate();
     }
     catch (std::exception &e)
     {
         std::cerr << e.what() << std::endl;
         return (1);
     }
-    std::cout << "File opened successfully." << std::endl;
     return (0);
 }

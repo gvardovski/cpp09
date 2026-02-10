@@ -3,14 +3,19 @@
 
 #include <iostream>
 #include <fstream>
-#include <map>
+#include <sstream>
 #include <algorithm>
+#include <map>
+#include <limits>
+#include <stdexcept>
 
 class BitcoinExchange
 {
     private:
         std::string _inputFileName;
-        std::map<std::string, int> _inputDataBase;
+        std::map<size_t, std::string> _inputDataBase;
+        std::map<std::string, std::string> _csvDataBase;
+
     public:
         // BitcoinExchange();
         BitcoinExchange(const std::string &inputFileName);
@@ -19,6 +24,13 @@ class BitcoinExchange
         ~BitcoinExchange();
 
         void getDataFromInputFile();
+        void getDataFromCsvFile();
+        void printCsvDataBase() const;
+        void isCsvDataValid() const;
+        bool isDateValid(const std::string &date) const;
+        bool isFloatValid(const std::string &value) const;
+        std::string isFloatOrUnsignedIntValid(const std::string &value) const;
+        void calculateExchangeRate();
 };
 
 #endif
