@@ -1,15 +1,33 @@
 #include "../inc/BitcoinExchange.hpp"
 
-// BitcoinExchange::BitcoinExchange(){}
+BitcoinExchange::BitcoinExchange(){}
 
 BitcoinExchange::BitcoinExchange(const std::string &inputFileName)
 {
     std::ifstream inputFile;
     inputFile.open(inputFileName.c_str());
     if (!inputFile.is_open())
-        throw std::runtime_error("Error: could not open file.");
+        throw CouldNotOpenFile();
     inputFile.close();
     this->_inputFileName = inputFileName.c_str();
+}
+
+BitcoinExchange::BitcoinExchange(const BitcoinExchange &other)
+{
+    this->_inputFileName = other._inputFileName;
+    this->_inputDataBase = other._inputDataBase;
+    this->_csvDataBase = other._csvDataBase;
+}
+
+BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange &other)
+{
+    if (this != &other)
+    {
+        this->_inputFileName = other._inputFileName;
+        this->_inputDataBase = other._inputDataBase;
+        this->_csvDataBase = other._csvDataBase;
+    }
+    return *this;
 }
 
 BitcoinExchange::~BitcoinExchange(){}
@@ -31,7 +49,7 @@ void BitcoinExchange::getDataFromInputFile()
             continue;
         }
         if (line.empty())
-            throw std::runtime_error("Error: empty line in input file.");  
+            throw EmptyLine();
         this->_inputDataBase[strNum] = line;
         strNum++;
     }
@@ -42,6 +60,8 @@ void BitcoinExchange::getDataFromCsvFile()
 {
     std::ifstream inputFile;
     inputFile.open("data/data.csv");
+    if (!inputFile.is_open())
+        throw CouldNotOpenFile();
     std::string line;
     size_t strNum = 0;
     while (std::getline(inputFile, line))
@@ -55,7 +75,7 @@ void BitcoinExchange::getDataFromCsvFile()
             continue;
         }
         if (line.empty())
-            throw std::runtime_error("Error: empty line in csv file.");
+            throw EmptyLine();
         size_t commaPos = line.find(',');
         std::string date = line.substr(0, commaPos);
         std::string value = "";
@@ -80,10 +100,27 @@ void BitcoinExchange::isCsvDataValid() const
 
 bool BitcoinExchange::isDateValid(const std::string &date) const
 {
-    struct tm tm;
-    if (strptime(date.c_str(), "%Y-%m-%d", &tm) == NULL)
-        return false;
-    return true;
+    if (date.size() != 10 || date[4] != '-' || date[7] != '-')
+		return (false);
+	for (int i = 0; i < 10; i++)
+	{
+		if (i == 4 || i == 7)
+			continue;
+		if (isdigit(date[i]) == 0)
+			return (false);
+	}
+
+	if (date[5] == '0' && date[6] == '0') 
+		return (false);
+	if ((date[5] == '1' && date[6] > '2') || date[5] > '1')
+		return (false);
+
+	if (date[8] == '0' && date[9] == '0')
+		return (false);
+	if ((date[8] == '3' && date[9] > '1') || date[8] > '3')
+		return (false);
+	
+	return (true);
 }
 
 bool BitcoinExchange::isFloatValid(const std::string &value) const
@@ -106,8 +143,8 @@ std::string BitcoinExchange::isFloatOrUnsignedIntValid(const std::string &value)
         ss >> x;
         if (ss.fail() || !ss.eof())
             return "Error: bad input => " + value;
-        if (x > std::numeric_limits<int>::max())
-            return "Error: too large a number.";
+        if (x > 1000)
+            return "Error: too large a number.";    
         if (x < 0)
             return "Error: not a positive number.";
     }

@@ -6,7 +6,6 @@
 #include <sstream>
 #include <algorithm>
 #include <map>
-#include <limits>
 #include <stdexcept>
 
 class BitcoinExchange
@@ -17,10 +16,10 @@ class BitcoinExchange
         std::map<std::string, std::string> _csvDataBase;
 
     public:
-        // BitcoinExchange();
+        BitcoinExchange();
         BitcoinExchange(const std::string &inputFileName);
-        // BitcoinExchange(const BitcoinExchange &other);
-        // BitcoinExchange& operator=(const BitcoinExchange &other);
+        BitcoinExchange(const BitcoinExchange &other);
+        BitcoinExchange& operator=(const BitcoinExchange &other);
         ~BitcoinExchange();
 
         void getDataFromInputFile();
@@ -31,6 +30,24 @@ class BitcoinExchange
         bool isFloatValid(const std::string &value) const;
         std::string isFloatOrUnsignedIntValid(const std::string &value) const;
         void calculateExchangeRate();
+
+    class CouldNotOpenFile : public std::exception
+    {
+        public:
+            virtual const char *what() const throw()
+            {
+                return ("Error: Could not open file");
+            }
+    };
+
+    class EmptyLine : public std::exception
+    {
+        public:
+            virtual const char *what() const throw()
+            {
+                return ("Error: Empty line in file");
+            }
+    };
 };
 
 #endif
