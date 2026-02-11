@@ -29,7 +29,6 @@ int main(int gc, char** gv)
         pmergeMeDeque.dequeMergeSort(pmergeMeDeque.dequeBegin(), pmergeMeDeque.dequeEnd(), 0);
         pmergeMeDeque.dequeInit();
         pmergeMeDeque.insertIntoDeque();
-        pmergeMeDeque.printDeque();
         pmergeMeDeque.printTime(1);
     }
     catch (const std::exception& e)

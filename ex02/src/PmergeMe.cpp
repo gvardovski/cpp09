@@ -174,11 +174,10 @@ std::list<std::pair<int, int> >::iterator PmergeMe::End()
 void PmergeMe::printTime(size_t n)
 {
     double time = static_cast<double>(endtime - starttime) / CLOCKS_PER_SEC * 1000;
-    std::cout << "Time to process a range of " << _list.size() << " elements with ";
 	if (n == 0)
-		std::cout << "std::list: ";
+		std::cout << "Time to process a range of " << _list.size() << " elements with std::list: ";
 	else
-		std::cout << "std::deque: ";
+		std::cout << "Time to process a range of " << _deque.size() << " elements with std::deque: ";
 	std::cout<< time << " ms" << std::endl;
 }
 
