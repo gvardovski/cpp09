@@ -6,15 +6,31 @@ int main(int gc, char** gv)
         return (std::cerr << "Error: Not enough arguments" << std::endl, 1);
     try
     {
-        PmergeMe pmergeMe(gv);
-        pmergeMe.printArguments(gv);
-        pmergeMe.listCreatePairs(gv);
-        pmergeMe.listSortPairs();
-        pmergeMe.mergeSort(pmergeMe.getListBegin(), pmergeMe.getListEnd(), 0);
-        pmergeMe.listInit();
-        pmergeMe.insertIntoList();
-        pmergeMe.printList();
-        pmergeMe.printTime();
+        PmergeMe pmergeMeList(gv);
+        pmergeMeList.printArguments(gv);
+        pmergeMeList.listCreatePairs(gv);
+        pmergeMeList.listSortPairs();
+        pmergeMeList.listMergeSort(pmergeMeList.Begin(), pmergeMeList.End(), 0);
+        pmergeMeList.listInit();
+        pmergeMeList.insertIntoList();
+        pmergeMeList.printList();
+        pmergeMeList.printTime(0);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << e.what() << std::endl;
+        return 1;
+    }
+    try
+    {
+        PmergeMe pmergeMeDeque;
+        pmergeMeDeque.dequeCreatePairs(gv);
+        pmergeMeDeque.dequeSortPairs();
+        pmergeMeDeque.dequeMergeSort(pmergeMeDeque.dequeBegin(), pmergeMeDeque.dequeEnd(), 0);
+        pmergeMeDeque.dequeInit();
+        pmergeMeDeque.insertIntoDeque();
+        pmergeMeDeque.printDeque();
+        pmergeMeDeque.printTime(1);
     }
     catch (const std::exception& e)
     {
