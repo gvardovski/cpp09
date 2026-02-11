@@ -59,7 +59,7 @@ void BitcoinExchange::getDataFromInputFile()
 void BitcoinExchange::getDataFromCsvFile()
 {
     std::ifstream inputFile;
-    inputFile.open("data/data.csv");
+    inputFile.open("data.csv");
     if (!inputFile.is_open())
         throw CouldNotOpenFile();
     std::string line;
@@ -109,7 +109,6 @@ bool BitcoinExchange::isDateValid(const std::string &date) const
 		if (isdigit(date[i]) == 0)
 			return (false);
 	}
-
 	if (date[5] == '0' && date[6] == '0') 
 		return (false);
 	if ((date[5] == '1' && date[6] > '2') || date[5] > '1')
@@ -119,7 +118,6 @@ bool BitcoinExchange::isDateValid(const std::string &date) const
 		return (false);
 	if ((date[8] == '3' && date[9] > '1') || date[8] > '3')
 		return (false);
-	
 	return (true);
 }
 
@@ -173,6 +171,11 @@ void BitcoinExchange::calculateExchangeRate()
             std::cerr << "Error: bad input => " << date << std::endl;
             continue;
         }
+		if (date < this->_csvDataBase.begin()->first || date > this->_csvDataBase.rbegin()->first)
+		{
+			std::cerr << "Error: bad input => " << date << std::endl;
+			continue;
+		}
         std::string value = "";
         if (pipePos != std::string::npos)
             value = it->second.substr(pipePos + 1);
