@@ -7,7 +7,14 @@ int main(int gc, char** gv)
     try
     {
         PmergeMe pmergeMe(gv);
-        pmergeMe.printArguments();
+        pmergeMe.printArguments(gv);
+        pmergeMe.listCreatePairs(gv);
+        pmergeMe.listSortPairs();
+        pmergeMe.mergeSort(pmergeMe.getListBegin(), pmergeMe.getListEnd(), 0);
+        pmergeMe.listInit();
+        pmergeMe.insertIntoList();
+        pmergeMe.printList();
+        pmergeMe.printTime();
     }
     catch (const std::exception& e)
     {
